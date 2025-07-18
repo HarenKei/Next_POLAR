@@ -28,6 +28,22 @@
   background-color: grey;
 }
 
+.userTierImage--bronze {
+  background: linear-gradient(135deg, #cd7f32 0%, #a97142 100%);
+}
+
+.userTierImage--gold {
+  background: linear-gradient(135deg, #ffe259 0%, #ffa751 100%);
+}
+
+.userTierImage--platinum {
+  background: linear-gradient(135deg, #b8e1fc 0%, #a1c4fd 100%);
+}
+
+.userTierImage--diamond {
+  background: linear-gradient(135deg, #4f8cff 0%, #a770ef 100%);
+}
+
 .userTierInfoTextContainer {
   display: flex;
   flex-direction: column;
