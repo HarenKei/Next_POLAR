@@ -14,6 +14,9 @@ import UserInfoSection from "@/app/_components/commons/common-sections/user-info
 import UserRecivedReviewsPreview from "./_components/sections/reviews-preview/UserRecivedReviewsPreview";
 import { useReceivedReviews } from "@/lib/hooks/review/useReceivedReviews";
 import { useAuthStore } from "@/lib/stores/authStore";
+import { getUserScoresBySeason } from "@/lib/api_front/score.api";
+import { useQuery } from "@tanstack/react-query";
+import { getUserScoresByCategoryAndSeason } from "@/lib/api_front/score.api";
 
 const UserProfilePage: React.FC = () => {
   const params = useParams();
@@ -28,12 +31,38 @@ const UserProfilePage: React.FC = () => {
   // 받은 리뷰
   const { data: receivedReviewsData } = useReceivedReviews(nickname);
 
+  // 유저 프로필
   const { data: userProfile } = useApiQuery<UserProfileResponseDto>(
     ["userProfile", nickname],
     `/api/users/${nickname}`,
     {
       enabled: !!nickname,
     }
+  );
+
+  // 유저 현재 시즌 점수
+  const { data: userSeasonScores, isLoading: isUserSeasonScoresLoading } =
+    useQuery({
+      queryKey: ["userSeasonScores", nickname, 1],
+      queryFn: () => getUserScoresBySeason(nickname, 1),
+      enabled: !!nickname,
+    });
+
+  console.log("userSeasonScores", userSeasonScores, isUserSeasonScoresLoading);
+
+  // 유저 카테고리+시즌별 점수
+  const {
+    data: userCategorySeasonScores,
+    isLoading: isUserCategorySeasonScoresLoading,
+  } = useQuery({
+    queryKey: ["userCategorySeasonScores", 1, 1],
+    queryFn: () => getUserScoresByCategoryAndSeason(1, 1),
+  });
+
+  console.log(
+    "userCategorySeasonScores",
+    userCategorySeasonScores,
+    isUserCategorySeasonScoresLoading
   );
 
   // ApiResponse에서 실제 데이터 추출
